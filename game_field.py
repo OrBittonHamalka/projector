@@ -1,7 +1,7 @@
 from consts import ROWS,COLS,MINE,FLAG
 import random
 
-def creat_empty_board ():
+def create_empty_board ():
     board_matrix=[]
     for i in range (ROWS):
         row=[]
@@ -9,7 +9,7 @@ def creat_empty_board ():
             row.append("empty")
         board_matrix.append(row)
     return board_matrix
-board_matrix=creat_empty_board()
+board_matrix=create_empty_board()
 
 def add_flag_mines ():
     board_matrix[24][49]=FLAG
