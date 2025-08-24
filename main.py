@@ -1,1 +1,3 @@
-import pygame
+import screen
+from screen import *
+SCREEN()
