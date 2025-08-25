@@ -76,13 +76,3 @@ def game_running():
         draw_background()
         screen.blit(small_soldier, char_rect)
         pygame.display.flip()
-
-def main():
-    define_screen()
-    enter_pic_soldier()
-    game_running()
-
-main()
-
-# Initialize Pygame
-
