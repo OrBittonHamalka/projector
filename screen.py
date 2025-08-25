@@ -3,101 +3,86 @@ import game_field
 import pygame
 import random
 
-from game_field import board_matrix
-
-image_flag = pygame.image.load("flag.png") #uploading pictures
-image_mine = pygame.image.load("mine.png")
-image_grass = pygame.image.load('grass.png')
-image_soldier = pygame.image.load("soldier.png")
-image_soldier_night = pygame.image.load("soldier_nigth.png")
-line_color = (200, 200, 200) #determining line colors for night vision
-block_size = 10 ##determining square size for night vision
-IMAGE_SMALL = pygame.transform.scale(image_grass, (50, 30))
-listn = []
-
-
-def define_screen():
-   global screen
-   background_colour = (51, 102, 0)
-   screen = pygame.display.set_mode((800, 600)) #screen size
-   pygame.display.set_caption('The Flag') #naming the window
-   screen.fill(background_colour)
-   pygame.display.flip()
-   pygame.init()
-
-   for position in range(20): #adding 20 grass pics on the screen randomly
-       rand_length = random.randint(0, 700)
-       rand_width = random.randint(0, 500)
-       listn.append(rand_length)
-       listn.append(rand_width)
-       set(listn)
-       screen.blit(IMAGE_SMALL, (rand_length, rand_width))
-       pygame.display.flip()
-
-   small_flag = pygame.transform.scale(image_flag, (50, 50))
-   screen.blit(small_flag, (748, 548))
-
-   font = pygame.font.SysFont("Arial", 20)
-   welcome = font.render("Welcome to The Flag game.", True, (255, 255, 255))
-   have_fun = font.render("Have Fun!", True, (255, 255, 255))
-   text_rect = welcome.get_rect(center=(200, 20))
-   text_rect1 = have_fun.get_rect(center=(135, 40))
-   screen.blit(welcome, text_rect)
-   screen.blit(have_fun, text_rect1)
-   pygame.display.flip()
-
-def enter_pic_soldier():
-    small_soldier = pygame.transform.scale(image_soldier, (80, 80)) #sizing down the soldier
-    screen.blit(small_soldier, (0,0)) #adding the soldier
-
-def game_running():
-   running = True #the window doesn't close until the user closes it
-   while running:
-       for event in pygame.event.get():
-           if event.type == pygame.QUIT:
-               running = False
-
-import keyboard
-
-# Initialize Pygame
 pygame.init()
 
-# Set up the game window
-s_width, s_height = 800, 600
-screen = pygame.display.set_mode((s_width, s_height))
-pygame.display.set_caption("Example to move character")
+image_flag = pygame.image.load("flag.png")
+image_mine = pygame.image.load("mine.png")
+image_grass = pygame.image.load("grass.png")
+image_soldier = pygame.image.load("soldier.png")
 
-# Load the character image
-char_img = pygame.image.load("tplogo.png")
-char_rect = char_img.get_rect()
-char_rect.center = (s_width // 2, s_height // 2)
-
-# Set up the clock
+IMAGE_SMALL = pygame.transform.scale(image_grass, (50, 30))
 clock = pygame.time.Clock()
 FPS = 60
+s_width, s_height = 800, 600
 
-# Set the game loop
-running = True
-while running:
-    dt = clock.tick(FPS) / 1000.0
+grass_positions = []
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+def define_screen():
+    global screen, small_flag, font, welcome, have_fun, text_rect, text_rect1
+    screen = pygame.display.set_mode((s_width, s_height))
+    pygame.display.set_caption('The Flag')
+    for _ in range(20):
+        rand_length = random.randint(0, 700)
+        rand_width = random.randint(0, 500)
+        grass_positions.append((rand_length, rand_width))
+    small_flag = pygame.transform.scale(image_flag, (50, 50))
 
-    if keyboard.is_pressed('left'):
-        char_rect.x -= 5
-    if keyboard.is_pressed('right'):
-        char_rect.x += 5
-    if keyboard.is_pressed('up'):
-        char_rect.y -= 5
-    if keyboard.is_pressed('down'):
-        char_rect.y += 5
+    font = pygame.font.SysFont("Arial", 20)
+    welcome = font.render("Welcome to The Flag game.", True, (255, 255, 255))
+    have_fun = font.render("Have Fun!", True, (255, 255, 255))
+    text_rect = welcome.get_rect(center=(200, 20))
+    text_rect1 = have_fun.get_rect(center=(135, 40))
 
-    # Update the screen
-    screen.fill((255, 255, 255))
-    screen.blit(char_img, char_rect)
-    pygame.display.flip()
+def enter_pic_soldier():
+    global char_rect, small_soldier
+    small_soldier = pygame.transform.scale(image_soldier, (80, 80))
+    char_rect = small_soldier.get_rect()
+    char_rect.topleft = (0, 0)
 
-# Quit the game
-pygame.quit()
+def draw_background():
+    screen.fill((51, 102, 0))
+    for pos in grass_positions:
+        screen.blit(IMAGE_SMALL, pos)
+    screen.blit(small_flag, (748, 548))
+    screen.blit(welcome, text_rect)
+    screen.blit(have_fun, text_rect1)
+
+def game_running():
+    running = True
+    while running:
+        dt = clock.tick(FPS) / 1000.0
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            char_rect.x -= 5
+        if keys[pygame.K_RIGHT]:
+            char_rect.x += 5
+        if keys[pygame.K_UP]:
+            char_rect.y -= 5
+        if keys[pygame.K_DOWN]:
+            char_rect.y += 5
+
+        if char_rect.left < 0:
+            char_rect.left = 0
+        if char_rect.right > s_width:
+            char_rect.right = s_width
+        if char_rect.top < 0:
+            char_rect.top = 0
+        if char_rect.bottom > s_height:
+            char_rect.bottom = s_height
+
+        draw_background()
+        screen.blit(small_soldier, char_rect)
+        pygame.display.flip()
+
+def main():
+    define_screen()
+    enter_pic_soldier()
+    game_running()
+
+main()
+
+# Initialize Pygame
+
