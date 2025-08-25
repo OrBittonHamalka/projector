@@ -1,5 +1,8 @@
 from consts import ROWS, COLS, MINE, FLAG, PLAYER,FLAG_INDEX
 import random
+import pygame
+
+from screen import start_screen
 
 
 def create_empty_board ():
@@ -46,5 +49,43 @@ def add_mines ():
    return board_matrix
 
 add_mines()
-for i in board_matrix:
-    print(i,"\n")
+# for i in board_matrix:
+#     print(i,"\n")
+
+# import pygame
+#
+# pygame.init()
+# window = pygame.display.set_mode(((800, 600)))
+# pygame.display.set_caption(('The Flag'))
+#
+# x, y = 50, 50
+# width, height = 40, 60
+# vel = 1
+#
+# clock = pygame.time.Clock()
+# run = True
+# while run:
+#     clock.tick(100)
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             run = False
+#
+#     keys = pygame.key.get_pressed()
+#     if keys[pygame.K_LEFT]:
+#         x -= vel
+#     if keys[pygame.K_RIGHT]:
+#         x += vel
+#     if keys[pygame.K_UP]:
+#         y -= vel
+#     if keys[pygame.K_DOWN]:
+#         y += vel
+#
+#     window.fill((0, 0, 0))
+#     pygame.draw.rect(window, (200, 23, 255), (x, y, width, height))
+#     pygame.display.update()
+#
+# pygame.quit()
+
+
+
+
